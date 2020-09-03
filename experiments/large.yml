@@ -1,0 +1,19 @@
+baseline:
+    imbalanced:
+        lr: 0.003
+        n_push_pull: 5
+        optimizer: sgd
+    balanced:
+        lr: 0.009
+        n_push_pull: 5
+        optimizer: adagrad
+
+datagossip:
+    imbalanced:
+        lr: 0.003
+        n_push_pull: 5
+        optimizer: sgd
+    balanced:
+        lr: 0.009
+        n_push_pull: 5
+        optimizer: sgd

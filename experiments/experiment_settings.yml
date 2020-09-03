@@ -1,0 +1,50 @@
+connection:
+  nodes:
+    - odin01
+    - odin02
+    - odin03
+    - odin04
+    - odin05
+    - odin06
+    - odin07
+    - odin08
+    - thor01
+    - thor02
+    - thor03
+    - thor04
+
+args:
+  optimizer: sgd
+
+  master_address: odin01
+  master_port: 29900
+
+  epochs: 100
+  early_stopping: False
+  datagossip:
+    - False
+
+  instance_selector: active_bias
+
+  batch_size:
+    - 64
+
+  lr:
+    - 0.003
+
+  n_push_pull:
+    - 5
+
+  k: 50
+
+  dataset:
+    - fashionmnist
+
+  model: large
+
+  imbalanced:
+    - False
+
+  tests: False
+
+  repetitions: 3

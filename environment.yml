@@ -1,0 +1,20 @@
+name: datagossip
+channels:
+  - conda-forge
+  - pytorch
+  - defaults
+dependencies:
+  - python=3.7
+  - pytorch=1.5.0
+  - torchvision=0.6.0
+  - numpy
+  - tqdm
+  - fire
+  - pandas
+  - pip
+  - pip:
+      - future==0.18.2
+      - tensorboard==2.0.2
+      - hyperopt==0.2.3
+      - PyYAML==5.3.1
+      - psutil==5.7.0

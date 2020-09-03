@@ -1,0 +1,41 @@
+from .transform_vision_datasets import Transformer
+from .data_loader import DistributedDataLoader
+from typing import Tuple
+from torch.utils.data.dataset import TensorDataset
+import os
+import logging
+from logging import Logger, INFO
+
+logger = Logger("Dataset Preparation", level=INFO)
+handler = logging.StreamHandler()
+handler.setLevel(INFO)
+logger.addHandler(handler)
+
+parent_dir = os.path.abspath(".")
+data_dir = os.path.join(parent_dir, "datagossip/data")
+
+MNIST = "mnist"
+FASHIONMNIST = "fashionmnist"
+CIFAR10 = "cifar10"
+EMNIST = "emnist"
+
+
+def load_dataset(dataset: str = MNIST) -> Tuple[TensorDataset, TensorDataset]:
+    train_dataset: TensorDataset = None
+    test_dataset: TensorDataset = None
+    try:
+        if dataset == MNIST:
+            dataset_name = "mnist_%s"
+        elif dataset == FASHIONMNIST:
+            dataset_name = "fashionmnist_%s"
+        elif dataset == CIFAR10:
+            dataset_name = "cifar10_%s"
+        elif dataset == EMNIST:
+            dataset_name = "emnist_%s"
+        else:
+            return train_dataset, test_dataset
+        train_dataset = Transformer(directory=data_dir, dataset_name=dataset_name % "train").load()
+        test_dataset = Transformer(directory=data_dir, dataset_name=dataset_name % "test").load()
+    except Exception as error:
+        print(f"Dataset couldn't be loaded due to {error}. Waiting for master node to share it.")
+    return train_dataset, test_dataset

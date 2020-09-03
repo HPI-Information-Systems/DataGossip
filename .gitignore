@@ -1,0 +1,6 @@
+.idea/
+logs/
+datagossip/data/
+data/
+helpers/
+**/__pycache__
