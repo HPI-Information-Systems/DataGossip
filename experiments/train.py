@@ -13,8 +13,8 @@ import cProfile, pstats
 
 from datagossip.datagossip import DataGossipLoader, DataGossipLoss
 from datagossip.dataset import load_dataset, DistributedDataLoader
-from datagossip.instance_selector import get_instance_selector_class
-from datagossip.models import load_model
+from datagossip.instance_selector import InstanceSelectorChooser
+from datagossip.models import ModelSize
 from datagossip.models.early_stopping import EarlyStopping
 from datagossip.optim import DownpourSGD, DownpourAdagrad
 from datagossip.server import ParameterServer
@@ -38,7 +38,7 @@ def main():
     parser.add_argument('--master_port', type=int, default=29900, help="Cluster master port")
     parser.add_argument('--datagossip', type=ownBool, default=True, help="DataGossip activated?")
     parser.add_argument('--optimizer', type=str, default="sgd", help="Which optimizer")
-    parser.add_argument('--instance_selector', type=str, default="active_bias", help="Which instance selector for DataGossip")
+    parser.add_argument('--instance_selector', type=InstanceSelectorChooser, choices=InstanceSelectorChooser, default="active_bias", help="Which instance selector for DataGossip")
     parser.add_argument('--early_stopping', type=ownBool, default=False, help="Early Stopping activated?")
     parser.add_argument('--patience', type=int, default=10, help="Early stopping after {patience} epochs")
     parser.add_argument('--epochs', type=int, default=100, help="Number of epochs")
@@ -49,16 +49,18 @@ def main():
     parser.add_argument('--k', type=int, default=50, help="Number of points being gossiped")
     parser.add_argument('--overlap', type=int, default=0, help="Overlap for baseline")
     parser.add_argument('--dataset', type=str, default='mnist', help="Dataset used for training")
-    parser.add_argument('--model', type=str, default='large', help="Model used for training")
+    parser.add_argument('--model', type=ModelSize, choices=ModelSize, default='large', help="Model used for training")
     parser.add_argument('--imbalanced', type=ownBool, default=True, help="Dataset partitioning imbalanced?")
     parser.add_argument('--local_tests', type=ownBool, default=False)
     parser.add_argument('--slowout', type=int, default=0, help="Number of nodes running with low priority processes")
+    parser.add_argument('--remote_train_frequency', type=int, default=1, help="After how many local training steps should a remote training follow?")
+    parser.add_argument('--parameter_server', type=ownBool, default=True, help="Use a Parameter Server")
     args = parser.parse_args(sys.argv[1:])
 
     print(args)
 
     (dataset, test_dataset), (data_loader, test_loader) = distribute_datasets(args)
-    model = load_model(args.model, args.dataset)
+    model = args.model.get_model_by_size(args.dataset)
 
     if args.datagossip:
         data_loader, criterion = prepare_datagossip(data_loader, args)
@@ -81,7 +83,8 @@ def main():
         if dist.get_rank() == 0:
             if args.datagossip:
                 data_loader.stop()
-            parameter_server(model, group=sgd_group, client_ranks=sgd_ranks[1:], args=args, test_loader=test_loader)
+            if args.parameter_server:
+                parameter_server(model, group=sgd_group, client_ranks=sgd_ranks[1:], args=args, test_loader=test_loader)
         else:
             train(
                 model,
@@ -116,7 +119,7 @@ def distribute_datasets(args) -> Tuple[Tuple[TensorDataset, TensorDataset], Tupl
 
 def prepare_datagossip(data_loader: DataLoader, args) -> Tuple[Iterable, nn.NLLLoss]:
     dg_loader = DataGossipLoader(data_loader,
-                                 instance_selector_class=get_instance_selector_class(args.instance_selector),
+                                 instance_selector=args.instance_selector,
                                  data_shape=data_loader.dataset.tensors[0].shape[1:],
                                  args=args)
 

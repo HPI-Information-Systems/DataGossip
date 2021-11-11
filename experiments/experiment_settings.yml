@@ -22,9 +22,12 @@ args:
   epochs: 100
   early_stopping: False
   datagossip:
+    - True
     - False
 
-  instance_selector: active_bias
+  parameter_server: False
+
+  instance_selector: hem
 
   batch_size:
     - 64
@@ -35,14 +38,23 @@ args:
   n_push_pull:
     - 5
 
-  k: 50
+  k:
+    - 10
+    - 20
+
+  n_gather: 1
+
+  remote_train_frequency:
+    - 1
+    - 2
 
   dataset:
     - fashionmnist
 
-  model: large
+  model: small
 
   imbalanced:
+    - True
     - False
 
   tests: False

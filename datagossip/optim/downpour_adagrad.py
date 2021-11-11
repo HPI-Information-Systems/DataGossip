@@ -6,7 +6,7 @@ from ..utils.distributed import ModelSerializer, MessageListener, MessageSender,
 
 
 class DownpourAdagrad(Adagrad):
-    def __init__(self, parameters, lr: float, model: torch.nn.Module, n_pull: int, n_push: int, group: dist.group, node_parallelization: bool = False):
+    def __init__(self, parameters, lr: float, model: torch.nn.Module, n_pull: int, n_push: int, group: dist.group, node_parallelization: bool = False, parameter_server: bool = True):
         super().__init__(parameters, lr=lr)
         self.iteration = 0
         self.n_pull = n_pull
@@ -17,6 +17,7 @@ class DownpourAdagrad(Adagrad):
         if node_parallelization:
             self.accgrad.share_memory_()
         self.group = group
+        self.parameter_server = parameter_server
 
         # todo - only send classification layer of pretrained models
         self.push_message_sender = MessageSender()
@@ -31,16 +32,22 @@ class DownpourAdagrad(Adagrad):
         self._sync_model()
 
     def _sync_model(self):
+        if not self.parameter_server:
+            return
         dist.broadcast(self.accgrad, src=0, group=self.group)
         ModelSerializer.overwrite_params(self.model, self.accgrad)
         self.accgrad.zero_()
         dist.barrier(group=self.group)
 
     def _push_gradients(self):
+        if not self.parameter_server:
+            return
         if self.push_message_sender(MessageType.GradientPush, self.accgrad):
             self.accgrad.zero_()
 
     def _pull_model(self):
+        if not self.parameter_server:
+            return
         self.pull_message_sender(MessageType.ParameterPull, torch.empty(1))
 
     def kill_master(self):
