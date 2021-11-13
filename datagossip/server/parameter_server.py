@@ -23,7 +23,6 @@ def test(model: nn.Module, data_loader: DataLoader, args):
     model.eval()
     correct = 0
     for data, target in data_loader:
-        data = resize_data(data, args)
         output = model(data)
         pred = output.max(1)[1]
         correct += pred.eq(target).sum().item()
