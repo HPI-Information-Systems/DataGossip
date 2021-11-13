@@ -57,7 +57,7 @@ def main():
     parser.add_argument('--parameter_server', type=ownBool, default=True, help="Use a Parameter Server")
     args = parser.parse_args(sys.argv[1:])
 
-    logger.info(args)
+    print(args)
 
     (dataset, test_dataset), (data_loader, test_loader) = distribute_datasets(args)
     model = args.model.get_model_by_size(args.dataset)
@@ -73,18 +73,18 @@ def main():
         size = args.size
         local_world_size = 1
 
-    logging.info("setup cluster")
+    print("setup cluster")
     with Cluster(rank, size, args.master_address, args.master_port):
-        logging.info("\r done")
+        print("\r done")
         sgd_ranks = [r for r in range(dist.get_world_size()) if (r % local_world_size) == 0]
-        logging.info("creating sgd group")
+        print("creating sgd group")
         sgd_group = dist.new_group(ranks=sgd_ranks)
-        logging.info("\r done")
+        print("\r done")
 
         if args.datagossip:
-            logging.info("creating datagossip group")
+            print("creating datagossip group")
             dist.new_group(ranks=[r for r in range(2, dist.get_world_size()) if (r % local_world_size) == 1])
-            logging.info("\r done")
+            print("\r done")
 
         if dist.get_rank() == 0:
             if args.datagossip:
@@ -184,8 +184,9 @@ def train(model: nn.Module, data_loader: DataLoader, test_loader: DataLoader, cr
                             n_push=args.n_push_pull,
                             model=model if args.model == "large" else model.classifier,
                             group=group)
-
+    print("starting experiment")
     with Experiment(".", metrics=["acc", "process_time"], attributes=dict(args._get_kwargs())) as experiment:
+        print("\r done")
         for e in range(args.epochs):
             for data, target in tqdm.tqdm(data_loader, desc=f"Epoch {e + 1}"):
                 data = resize_data(data, args)
