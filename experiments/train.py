@@ -12,6 +12,7 @@ import time
 import cProfile, pstats
 
 from datagossip.datagossip import DataGossipLoader, DataGossipLoss
+from datagossip.datagossip.loader.cycle import DataGossipCycleLoader
 from datagossip.dataset import load_dataset, DistributedDataLoader
 from datagossip.instance_selector import InstanceSelectorChooser
 from datagossip.models import ModelSize
@@ -55,6 +56,7 @@ def main():
     parser.add_argument('--slowout', type=int, default=0, help="Number of nodes running with low priority processes")
     parser.add_argument('--remote_train_frequency', type=int, default=1, help="After how many local training steps should a remote training follow?")
     parser.add_argument('--parameter_server', type=ownBool, default=True, help="Use a Parameter Server")
+    parser.add_argument('--cylce', type=ownBool, default=False, help="Oversampling?")
     args = parser.parse_args(sys.argv[1:])
 
     print(args)
@@ -124,10 +126,14 @@ def distribute_datasets(args) -> Tuple[Tuple[TensorDataset, TensorDataset], Tupl
 
 
 def prepare_datagossip(data_loader: DataLoader, args) -> Tuple[Iterable, nn.NLLLoss]:
-    dg_loader = DataGossipLoader(data_loader,
-                                 instance_selector=args.instance_selector,
-                                 data_shape=data_loader.dataset.tensors[0].shape[1:],
-                                 args=args)
+    if args.cycle:
+        dg_loader_class = DataGossipCycleLoader
+    else:
+        dg_loader_class = DataGossipLoader
+    dg_loader = dg_loader_class(data_loader,
+                                instance_selector=args.instance_selector,
+                                data_shape=data_loader.dataset.tensors[0].shape[1:],
+                                args=args)
 
     if args.model == "large":
         loss_fn = nn.functional.nll_loss

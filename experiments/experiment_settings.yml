@@ -59,4 +59,6 @@ args:
     - True
     - False
 
+  cycle: True
+
   repetitions: 3
