@@ -13,7 +13,7 @@ from ..utils.experiments import Experiment
 
 
 def resize_data(data: torch.Tensor, args, size: int = 224):
-    if args.model != "large":
+    if args.model not in ["small", "medium", "large"]:
         data = nn.functional.interpolate(data, size=size)
     return data
 
