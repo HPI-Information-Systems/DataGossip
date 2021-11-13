@@ -12,7 +12,7 @@ handler.setLevel(INFO)
 logger.addHandler(handler)
 
 parent_dir = os.path.abspath(".")
-data_dir = os.path.join(parent_dir, "datagossip/data")
+data_dir = os.path.join(parent_dir, "data")
 
 MNIST = "mnist"
 FASHIONMNIST = "fashionmnist"
