@@ -178,12 +178,14 @@ def train(model: nn.Module, data_loader: DataLoader, test_loader: DataLoader, cr
 
     parameters = model.parameters() if args.model == "large" else model.classifier.parameters()
 
+    print("setup optimizer")
     optimizer = optim_class(parameters,
                             lr=args.lr,
                             n_pull=args.n_push_pull,
                             n_push=args.n_push_pull,
                             model=model if args.model == "large" else model.classifier,
                             group=group)
+    print("done")
     print("starting experiment")
     with Experiment(".", metrics=["acc", "process_time"], attributes=dict(args._get_kwargs())) as experiment:
         print("\r done")
