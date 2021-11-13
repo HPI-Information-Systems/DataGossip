@@ -56,7 +56,7 @@ def main():
     parser.add_argument('--slowout', type=int, default=0, help="Number of nodes running with low priority processes")
     parser.add_argument('--remote_train_frequency', type=int, default=1, help="After how many local training steps should a remote training follow?")
     parser.add_argument('--parameter_server', type=ownBool, default=True, help="Use a Parameter Server")
-    parser.add_argument('--cylce', type=ownBool, default=False, help="Oversampling?")
+    parser.add_argument('--cycle', type=ownBool, default=False, help="Oversampling?")
     args = parser.parse_args(sys.argv[1:])
 
     print(args)
