@@ -29,9 +29,12 @@ class DownpourSGD(SGD):
         # todo - only send classification layer of pretrained models
         self.push_message_sender = MessageSender()
         self.pull_message_sender = MessageSender()
+        print("setup downpour listener")
         self.message_listener = DownpourListener(self.model)
         if not self.parallel:
+            print("start listener")
             self.message_listener.start()
+            print("sync model")
             self._sync_model()
 
     def setup_parallel(self):
@@ -42,8 +45,10 @@ class DownpourSGD(SGD):
         if not self.parameter_server:
             return
         dist.broadcast(self.accgrad, src=0, group=self.group)
+        print("received broadcast")
         ModelSerializer.overwrite_params(self.model, self.accgrad)
         self.accgrad.zero_()
+        print("dist barrier")
         dist.barrier(group=self.group)
 
     def _push_gradients(self):

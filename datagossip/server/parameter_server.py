@@ -84,6 +84,7 @@ class ModelTester(mp.Process):
 
 class ParameterServer:
     def __init__(self, model: nn.Module, group: dist.group, client_ranks: List[int], args, test_loader: DataLoader = None, test_model: nn.Module = None):
+        print("setup listeners")
         self.listeners = [
             GradientPushListener(model),
             ParameterPullListener(model)
@@ -94,12 +95,14 @@ class ParameterServer:
             self.model_tester = ModelTester(test_model, test_loader, args)
         self.group = group
         self.client_ranks = client_ranks
+        print("sync model")
         self._sync_model(model)
         self.is_running = False
 
     def _sync_model(self, model: nn.Module):
         flat_model = ModelSerializer.flatten_model(model, grads=False)
         dist.broadcast(flat_model, src=0, group=self.group)
+        print("dist barrier")
         dist.barrier(group=self.group)
 
     def start(self):
