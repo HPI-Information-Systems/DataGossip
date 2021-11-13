@@ -4,6 +4,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.distributed as dist
+from datagossip.datagossip.loader.foreign import ForeignCycleIterator
 from torch.utils.data import TensorDataset, DataLoader
 from typing import Tuple, Iterable, List
 import tqdm
@@ -127,13 +128,16 @@ def distribute_datasets(args) -> Tuple[Tuple[TensorDataset, TensorDataset], Tupl
 
 def prepare_datagossip(data_loader: DataLoader, args) -> Tuple[Iterable, nn.NLLLoss]:
     if args.cycle:
-        dg_loader_class = DataGossipCycleLoader
+        dg_loader = DataGossipCycleLoader(data_loader,
+                    instance_selector=args.instance_selector,
+                    data_shape=data_loader.dataset.tensors[0].shape[1:],
+                    args=args,
+                    foreign_data_loader=ForeignCycleIterator)
     else:
-        dg_loader_class = DataGossipLoader
-    dg_loader = dg_loader_class(data_loader,
-                                instance_selector=args.instance_selector,
-                                data_shape=data_loader.dataset.tensors[0].shape[1:],
-                                args=args)
+        dg_loader = DataGossipLoader(data_loader,
+                    instance_selector=args.instance_selector,
+                    data_shape=data_loader.dataset.tensors[0].shape[1:],
+                    args=args)
 
     if args.model == "large":
         loss_fn = nn.functional.nll_loss
