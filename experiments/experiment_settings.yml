@@ -27,7 +27,7 @@ args:
     - True
     - False
 
-  parameter_server: False
+  parameter_server: True
 
   instance_selector: hard_example_mining
 
