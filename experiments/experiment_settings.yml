@@ -12,6 +12,8 @@ connection:
     - thor02
     - thor03
     - thor04
+    - thor05
+    - thor06
 
 args:
   optimizer: sgd
