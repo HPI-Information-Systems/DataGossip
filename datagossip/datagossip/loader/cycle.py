@@ -2,17 +2,17 @@ from typing import Type, List
 from torch.utils.data import DataLoader
 from .base import DataGossipLoader
 from .foreign import ForeignDataIterator
-from ...instance_selector import InstanceSelector
+from ...instance_selector import InstanceSelectorChooser
 
 
 class DataGossipCycleLoader(DataGossipLoader):
     def __init__(self,
                  data_loader: DataLoader,
-                 instance_selector_class: Type[InstanceSelector],
+                 instance_selector: InstanceSelectorChooser,
                  data_shape: List[int],
                  args,
                  foreign_data_loader: Type[ForeignDataIterator] = ForeignDataIterator):
-        super(DataGossipCycleLoader, self).__init__(data_loader, instance_selector_class, data_shape, args, foreign_data_loader)
+        super(DataGossipCycleLoader, self).__init__(data_loader, instance_selector, data_shape, args, foreign_data_loader)
 
         self.foreign_every = args.remote_train_frequency
 
