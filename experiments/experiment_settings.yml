@@ -59,6 +59,4 @@ args:
     - True
     - False
 
-  tests: False
-
   repetitions: 3
