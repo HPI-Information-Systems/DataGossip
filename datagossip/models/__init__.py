@@ -17,7 +17,7 @@ class ModelSize(Enum):
         model_kwargs = {}
         model_kwargs.update({
             "in_channels": 1 if dataset in one_dim_datasets else 3,
-            "out_channels": 62 if dataset == "emnist" else 10
+            #"out_channels": 62 if dataset == "emnist" else 10
         })
 
         if self == self.SMALL:
