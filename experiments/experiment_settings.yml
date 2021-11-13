@@ -29,7 +29,7 @@ args:
 
   parameter_server: False
 
-  instance_selector: hem
+  instance_selector: hard_example_mining
 
   batch_size:
     - 64
