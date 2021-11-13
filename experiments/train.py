@@ -140,10 +140,10 @@ def prepare_datagossip(data_loader: DataLoader, args) -> Tuple[Iterable, nn.NLLL
 
 
 def parameter_server(model: nn.Module, group: dist.group, client_ranks: List[int], args, test_loader: DataLoader):
-    logger.debug("parameter server started")
+    print("parameter server started")
     server = ParameterServer(model=model if args.model == "large" else model.classifier, group=group, client_ranks=client_ranks, args=args, test_loader=test_loader, test_model=model)
     server.start()
-    logger.debug("parameter server stopped")
+    print("parameter server stopped")
 
 
 def resize_data(data: torch.Tensor, args, size: int = 224):
