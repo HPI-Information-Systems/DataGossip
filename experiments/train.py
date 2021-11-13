@@ -141,7 +141,7 @@ def prepare_datagossip(data_loader: DataLoader, args) -> Tuple[Iterable, nn.NLLL
 
 def parameter_server(model: nn.Module, group: dist.group, client_ranks: List[int], args, test_loader: DataLoader):
     print("parameter server started")
-    server = ParameterServer(model=model if args.model == "large" else model.classifier, group=group, client_ranks=client_ranks, args=args, test_loader=test_loader, test_model=model)
+    server = ParameterServer(model=model, group=group, client_ranks=client_ranks, args=args, test_loader=test_loader, test_model=model)
     server.start()
     print("parameter server stopped")
 
