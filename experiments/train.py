@@ -176,14 +176,14 @@ def train(model: nn.Module, data_loader: DataLoader, test_loader: DataLoader, cr
     else:
         raise ValueError(f"Please choose either 'sgd' or 'adagrad' as optimizer! Wrong input: '{args.optimizer}'")
 
-    parameters = model.parameters() if args.model == "large" else model.classifier.parameters()
+    parameters = model.parameters()
 
     print("setup optimizer")
     optimizer = optim_class(parameters,
                             lr=args.lr,
                             n_pull=args.n_push_pull,
                             n_push=args.n_push_pull,
-                            model=model if args.model == "large" else model.classifier,
+                            model=model,
                             group=group)
     print("done")
     print("starting experiment")
