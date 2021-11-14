@@ -29,7 +29,7 @@ args:
 
   parameter_server: True
 
-  instance_selector: hard_example_mining
+  instance_selector: active_bias
 
   batch_size:
     - 64
