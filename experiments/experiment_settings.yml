@@ -25,14 +25,12 @@ args:
   early_stopping: False
   datagossip:
     - True
+    - False
 
   parameter_server: True
 
   instance_selector:
     - active_bias
-    - hard_example_mining
-    - random
-    - self_paced_learning
 
   batch_size:
     - 64
@@ -45,17 +43,11 @@ args:
 
   k:
     - 5
-    - 10
-    - 20
-    - 50
 
   n_gather: 1
 
   remote_train_frequency:
     - 1
-    - 2
-    - 4
-    - 8
 
   dataset:
     - cifar10
@@ -65,6 +57,7 @@ args:
 
   imbalanced:
     - True
+    - False
 
   cycle: True
 
