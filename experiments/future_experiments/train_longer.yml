@@ -1,3 +1,5 @@
+# train longer and update frequency for balanced
+
 connection:
   nodes:
     - odin01
@@ -48,9 +50,11 @@ args:
 
   remote_train_frequency:
     - 1
+    - 4
 
   dataset:
     - cifar10
+    - fashionmnist
 
   model: small
 

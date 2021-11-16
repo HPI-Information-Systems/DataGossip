@@ -50,7 +50,7 @@ args:
     - 1
 
   dataset:
-    - cifar10
+    - cifar10bw  # download and transform first
 
   model: small
 
