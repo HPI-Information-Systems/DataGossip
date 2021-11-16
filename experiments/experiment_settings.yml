@@ -21,10 +21,9 @@ args:
   master_address: odin01
   master_port: 29900
 
-  epochs: 100
+  epochs: 200
   early_stopping: False
   datagossip:
-    - True
     - False
 
   parameter_server: True
