@@ -21,7 +21,7 @@ args:
   master_address: odin01
   master_port: 29900
 
-  epochs: 400
+  epochs: 200
   early_stopping: False
   datagossip:
     - False
@@ -50,7 +50,7 @@ args:
     - 1
 
   dataset:
-    - cifar10
+    - cifar10bw  # download and transform first
 
   model: small
 
