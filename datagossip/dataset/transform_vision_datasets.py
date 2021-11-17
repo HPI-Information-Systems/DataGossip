@@ -43,9 +43,9 @@ class Transformer:
 def transforms_simplecnn(add_transformers: Optional[List[object]] = None) -> transforms.Compose:
     add_transformers = add_transformers or []
     return transforms.Compose([
+                            *add_transformers,
                             transforms.ToTensor(),
                             transforms.Normalize((0.1307,), (0.3081,)),
-                            *add_transformers
                         ])
 
 
