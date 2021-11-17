@@ -93,8 +93,9 @@ class TransformScripts:
 
     @staticmethod
     def cifar10bw(location="../data", pretrained=False):
-        transform = transforms_pretrained() if pretrained else transforms_simplecnn([transforms.ToPILImage(),
-            transforms.Grayscale()])
+        transform = transforms_pretrained() if pretrained else transforms_simplecnn([transforms.ToTensor(),
+                                                                                     transforms.ToPILImage(),
+                                                                                     transforms.Grayscale()])
 
         dataset = CIFAR10(location, train=True, download=True,
                           transform=transform)
