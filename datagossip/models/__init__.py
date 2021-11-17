@@ -5,7 +5,7 @@ from .small import SmallModel
 from .medium import MediumModel
 from .large import LargeModel
 
-one_dim_datasets = ["mnist", "fashionmnist", "emnist"]
+one_dim_datasets = ["mnist", "fashionmnist", "emnist", "cifar10bw"]
 
 
 class ModelSize(Enum):

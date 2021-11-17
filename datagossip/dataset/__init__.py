@@ -17,6 +17,7 @@ data_dir = os.path.join(parent_dir, "data")
 MNIST = "mnist"
 FASHIONMNIST = "fashionmnist"
 CIFAR10 = "cifar10"
+CIFAR10BW = "cifar10bw"
 EMNIST = "emnist"
 
 
@@ -29,6 +30,8 @@ def load_dataset(dataset: str = MNIST) -> Tuple[TensorDataset, TensorDataset]:
         elif dataset == FASHIONMNIST:
             dataset_name = "fashionmnist_%s"
         elif dataset == CIFAR10:
+            dataset_name = "cifar10_%s"
+        elif dataset == CIFAR10BW:
             dataset_name = "cifar10_%s"
         elif dataset == EMNIST:
             dataset_name = "emnist_%s"
