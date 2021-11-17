@@ -53,7 +53,7 @@ args:
     - 4
 
   dataset:
-    - cifar10
+    - cifar10bw
     - fashionmnist
 
   model: small

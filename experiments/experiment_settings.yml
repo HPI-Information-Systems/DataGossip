@@ -1,3 +1,5 @@
+# train longer and update frequency for balanced
+
 connection:
   nodes:
     - odin01
@@ -21,7 +23,7 @@ args:
   master_address: odin01
   master_port: 29900
 
-  epochs: 200
+  epochs: 400
   early_stopping: False
   datagossip:
     - False
@@ -48,9 +50,11 @@ args:
 
   remote_train_frequency:
     - 1
+    - 4
 
   dataset:
-    - cifar10bw  # download and transform first
+    - cifar10bw
+    - fashionmnist
 
   model: small
 
