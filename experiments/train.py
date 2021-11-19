@@ -36,8 +36,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--rank', type=int, help="Cluster rank")
     parser.add_argument('--size', type=int, help="Cluster size")
-    parser.add_argument('--master_address', type=str, default="localhost", help="Cluster master address")
-    parser.add_argument('--master_port', type=int, default=29900, help="Cluster master port")
+    parser.add_argument('--main_address', type=str, default="localhost", help="Cluster main address")
+    parser.add_argument('--main_port', type=int, default=29900, help="Cluster main port")
     parser.add_argument('--datagossip', type=ownBool, default=True, help="DataGossip activated?")
     parser.add_argument('--optimizer', type=str, default="sgd", help="Which optimizer")
     parser.add_argument('--instance_selector', type=InstanceSelectorChooser, choices=InstanceSelectorChooser, default="active_bias", help="Which instance selector for DataGossip")
@@ -77,7 +77,7 @@ def main():
         local_world_size = 1
 
     print("setup cluster")
-    with Cluster(rank, size, args.master_address, args.master_port):
+    with Cluster(rank, size, args.main_address, args.main_port):
         print("\r done")
         sgd_ranks = [r for r in range(dist.get_world_size()) if (r % local_world_size) == 0]
         print("creating sgd group")
@@ -108,7 +108,7 @@ def main():
 def distribute_datasets(args) -> Tuple[Tuple[TensorDataset, TensorDataset], Tuple[DataLoader, DataLoader]]:
     dataset, test_dataset = load_dataset(args.dataset)
 
-    with Cluster(args.rank, args.size, args.master_address, args.master_port):
+    with Cluster(args.rank, args.size, args.main_address, args.main_port):
         data_loader = DistributedDataLoader(dataset,
                                             partition=True,
                                             parameter_server=True,
@@ -214,7 +214,7 @@ def train(model: nn.Module, data_loader: DataLoader, test_loader: DataLoader, cr
                     logger.debug(f"early stopping after {early_stopping.patience} epochs of patience")
                     break
 
-    optimizer.kill_master()
+    optimizer.kill_main()
     if args.datagossip:
         data_loader.stop()
 

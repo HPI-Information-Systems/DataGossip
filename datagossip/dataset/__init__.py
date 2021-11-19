@@ -40,5 +40,5 @@ def load_dataset(dataset: str = MNIST) -> Tuple[TensorDataset, TensorDataset]:
         train_dataset = Transformer(directory=data_dir, dataset_name=dataset_name % "train").load()
         test_dataset = Transformer(directory=data_dir, dataset_name=dataset_name % "test").load()
     except Exception as error:
-        print(f"Dataset couldn't be loaded due to {error}. Waiting for master node to share it.")
+        print(f"Dataset couldn't be loaded due to {error}. Waiting for main node to share it.")
     return train_dataset, test_dataset

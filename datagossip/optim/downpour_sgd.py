@@ -62,7 +62,7 @@ class DownpourSGD(SGD):
             return
         self.pull_message_sender(MessageType.ParameterPull, torch.empty(1))
 
-    def kill_master(self):
+    def kill_main(self):
         if not self.parameter_server:
             return
         dist.send(torch.empty(1), dst=0, tag=MessageType.PoisonPill.value)
@@ -90,4 +90,4 @@ class DownpourSGD(SGD):
         pass
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.kill_master()
+        self.kill_main()

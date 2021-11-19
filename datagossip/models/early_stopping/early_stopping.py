@@ -2,7 +2,7 @@ import logging
 
 
 class EarlyStopping:
-    """Inspired by https://github.com/pytorch/ignite/blob/master/ignite/handlers/early_stopping.py"""
+    """Inspired by https://github.com/pytorch/ignite/blob/main/ignite/handlers/early_stopping.py"""
 
     def __init__(self,
                  patience: int,

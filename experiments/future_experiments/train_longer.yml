@@ -20,8 +20,8 @@ connection:
 args:
   optimizer: sgd
 
-  master_address: odin01
-  master_port: 29900
+  main_address: odin01
+  main_port: 29900
 
   epochs: 400
   early_stopping: False
