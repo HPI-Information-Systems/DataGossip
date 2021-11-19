@@ -45,7 +45,7 @@ def downpour_wrapper(optimizer: Optimizer.__class__) -> Optimizer.__class__:
         def _pull_model(self):
             self.pull_message_sender(MessageType.ParameterPull, torch.empty(1))
 
-        def kill_master(self):
+        def kill_main(self):
             dist.send(torch.empty(1), dst=0, tag=MessageType.PoisonPill.value)
             dist.barrier(group=self.group)
 

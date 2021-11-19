@@ -23,7 +23,7 @@ args:
   main_address: odin01
   main_port: 29900
 
-  epochs: 600
+  epochs: 400
   early_stopping: False
   datagossip:
     - False

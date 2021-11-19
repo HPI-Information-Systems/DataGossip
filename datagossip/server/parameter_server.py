@@ -13,7 +13,7 @@ from ..utils.experiments import Experiment
 
 
 def resize_data(data: torch.Tensor, args, size: int = 224):
-    if args.model != "large":
+    if args.model not in ["small", "medium", "large"]:
         data = nn.functional.interpolate(data, size=size)
     return data
 
@@ -23,7 +23,6 @@ def test(model: nn.Module, data_loader: DataLoader, args):
     model.eval()
     correct = 0
     for data, target in data_loader:
-        data = resize_data(data, args)
         output = model(data)
         pred = output.max(1)[1]
         correct += pred.eq(target).sum().item()
@@ -84,6 +83,7 @@ class ModelTester(mp.Process):
 
 class ParameterServer:
     def __init__(self, model: nn.Module, group: dist.group, client_ranks: List[int], args, test_loader: DataLoader = None, test_model: nn.Module = None):
+        print("setup listeners")
         self.listeners = [
             GradientPushListener(model),
             ParameterPullListener(model)
@@ -94,12 +94,14 @@ class ParameterServer:
             self.model_tester = ModelTester(test_model, test_loader, args)
         self.group = group
         self.client_ranks = client_ranks
+        print("sync model")
         self._sync_model(model)
         self.is_running = False
 
     def _sync_model(self, model: nn.Module):
         flat_model = ModelSerializer.flatten_model(model, grads=False)
         dist.broadcast(flat_model, src=0, group=self.group)
+        print("dist barrier")
         dist.barrier(group=self.group)
 
     def start(self):

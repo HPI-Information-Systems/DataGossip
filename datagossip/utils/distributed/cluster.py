@@ -6,18 +6,18 @@ class Cluster:
     def __init__(self,
                  rank: int,
                  size: int,
-                 master_address: str = "127.0.0.1",
-                 master_port: int = 29900,
+                 main_address: str = "127.0.0.1",
+                 main_port: int = 29900,
                  backend: str = "gloo"):
         self.rank = rank
         self.size = size
-        self.master_address = master_address
-        self.master_port = master_port
+        self.main_address = main_address
+        self.main_port = main_port
         self.backend = backend
 
     def _setup_cluster(self, rank, size):
         dist.init_process_group(self.backend,
-                                init_method=f"tcp://{self.master_address}:{self.master_port}",
+                                init_method=f"tcp://{self.main_address}:{self.main_port}",
                                 rank=rank, world_size=size, timeout=datetime.timedelta(0, 3600))
 
     def __enter__(self):

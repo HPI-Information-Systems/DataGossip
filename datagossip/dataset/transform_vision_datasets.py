@@ -1,3 +1,5 @@
+from typing import List, Optional
+
 import torch
 from torch.utils.data import Dataset, TensorDataset
 from torchvision.datasets import MNIST, FashionMNIST, CIFAR10, EMNIST
@@ -38,10 +40,12 @@ class Transformer:
         return TensorDataset(data, targets)
 
 
-def transforms_simplecnn() -> transforms.Compose:
+def transforms_simplecnn(add_transformers: Optional[List[object]] = None) -> transforms.Compose:
+    add_transformers = add_transformers or []
     return transforms.Compose([
+                            *add_transformers,
                             transforms.ToTensor(),
-                            transforms.Normalize((0.1307,), (0.3081,))
+                            transforms.Normalize((0.1307,), (0.3081,)),
                         ])
 
 
@@ -84,6 +88,19 @@ class TransformScripts:
                                transform=transform)
         test_dataset = CIFAR10(location, train=False, download=True,
                                     transform=transform)
+        Transformer("cifar10_train", location, dataset).transform().save()
+        Transformer("cifar10_test", location, test_dataset).transform().save()
+
+    @staticmethod
+    def cifar10bw(location="../data", pretrained=False):
+        transform = transforms_pretrained() if pretrained else transforms_simplecnn([transforms.ToTensor(),
+                                                                                     transforms.ToPILImage(),
+                                                                                     transforms.Grayscale()])
+
+        dataset = CIFAR10(location, train=True, download=True,
+                          transform=transform)
+        test_dataset = CIFAR10(location, train=False, download=True,
+                               transform=transform)
         Transformer("cifar10_train", location, dataset).transform().save()
         Transformer("cifar10_test", location, test_dataset).transform().save()
 

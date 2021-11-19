@@ -45,8 +45,8 @@ class DataGossipProcess(mp.Process):
         self.size = args.size
         self.instance_selection_req = None
         self.all_gather_req = None
-        self.master_address = args.master_address
-        self.master_port = args.master_port
+        self.main_address = args.main_address
+        self.main_port = args.main_port
         self.dg_group = None
 
     def run_instance_selection(self):
@@ -83,8 +83,8 @@ class DataGossipProcess(mp.Process):
         return Cluster(
                     rank=rank,
                     size=size,
-                    master_address=self.master_address,
-                    master_port=self.master_port
+                    main_address=self.main_address,
+                    main_port=self.main_port
                 )
 
     def _setup_groups(self):

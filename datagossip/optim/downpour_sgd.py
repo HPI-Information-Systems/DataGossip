@@ -13,7 +13,7 @@ class DownpourListener(MessageListener):
 
 
 class DownpourSGD(SGD):
-    def __init__(self, parameters, lr: float, model: torch.nn.Module, n_pull: int, n_push: int, group: dist.group, node_parallelization: bool = False):
+    def __init__(self, parameters, lr: float, model: torch.nn.Module, n_pull: int, n_push: int, group: dist.group, node_parallelization: bool = False, parameter_server: bool = True):
         super().__init__(parameters, lr=lr)
         self.iteration = 0
         self.n_pull = n_pull
@@ -24,13 +24,17 @@ class DownpourSGD(SGD):
         if node_parallelization:
             self.accgrad.share_memory_()
         self.group = group
+        self.parameter_server = parameter_server
 
         # todo - only send classification layer of pretrained models
         self.push_message_sender = MessageSender()
         self.pull_message_sender = MessageSender()
+        print("setup downpour listener")
         self.message_listener = DownpourListener(self.model)
         if not self.parallel:
+            print("start listener")
             self.message_listener.start()
+            print("sync model")
             self._sync_model()
 
     def setup_parallel(self):
@@ -38,19 +42,29 @@ class DownpourSGD(SGD):
         self._sync_model()
 
     def _sync_model(self):
+        if not self.parameter_server:
+            return
         dist.broadcast(self.accgrad, src=0, group=self.group)
+        print("received broadcast")
         ModelSerializer.overwrite_params(self.model, self.accgrad)
         self.accgrad.zero_()
+        print("dist barrier")
         dist.barrier(group=self.group)
 
     def _push_gradients(self):
+        if not self.parameter_server:
+            return
         if self.push_message_sender(MessageType.GradientPush, self.accgrad):
             self.accgrad.zero_()
 
     def _pull_model(self):
+        if not self.parameter_server:
+            return
         self.pull_message_sender(MessageType.ParameterPull, torch.empty(1))
 
-    def kill_master(self):
+    def kill_main(self):
+        if not self.parameter_server:
+            return
         dist.send(torch.empty(1), dst=0, tag=MessageType.PoisonPill.value)
         dist.barrier(group=self.group)
 
@@ -76,4 +90,4 @@ class DownpourSGD(SGD):
         pass
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.kill_master()
+        self.kill_main()

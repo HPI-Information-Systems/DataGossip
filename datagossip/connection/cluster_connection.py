@@ -7,7 +7,7 @@ import logging
 
 def setup_cluster(connector: Connector):
     if connector.backend == 'gloo':
-        dist.init_process_group(connector.backend, init_method=f"tcp://{connector.master_address}:{connector.master_port}", rank=connector.rank, world_size=connector.size)
+        dist.init_process_group(connector.backend, init_method=f"tcp://{connector.main_address}:{connector.main_port}", rank=connector.rank, world_size=connector.size)
     elif connector.backend == 'mpi':
         dist.init_process_group(connector.backend)
     else:
@@ -16,7 +16,7 @@ def setup_cluster(connector: Connector):
 
 
 def wait_for_finish(connector: Connector):
-    connector.master_port = int(connector.master_port) + 1
+    connector.main_port = int(connector.main_port) + 1
     rank, size = setup_cluster(connector)
     logging.debug(f"barrier {rank}")
     if dist.get_backend() == dist.Backend.GLOO:
