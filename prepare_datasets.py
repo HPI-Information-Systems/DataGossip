@@ -11,7 +11,7 @@ logger.addHandler(handler)
 
 
 if __name__ == "__main__":
-    location = os.path.abspath("datagossip/data")
+    location = os.path.abspath("data")
     logger.info(f"saving to location {location}")
 
     logger.info("Preparing FashionMNIST")
