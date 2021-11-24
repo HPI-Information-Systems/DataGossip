@@ -19,7 +19,6 @@ class DownpourAdagrad(Adagrad):
         self.group = group
         self.parameter_server = parameter_server
 
-        # todo - only send classification layer of pretrained models
         self.push_message_sender = MessageSender()
         self.pull_message_sender = MessageSender()
         self.message_listener = DownpourListener(self.model)

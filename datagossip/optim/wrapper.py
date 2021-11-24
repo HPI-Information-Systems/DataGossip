@@ -20,7 +20,6 @@ def downpour_wrapper(optimizer: Optimizer.__class__) -> Optimizer.__class__:
                 self.accgrad.share_memory_()
             self.group = group
 
-            # todo - only send classification layer of pretrained models
             self.push_message_sender = MessageSender()
             self.pull_message_sender = MessageSender()
             self.message_listener = DownpourListener(self.model)

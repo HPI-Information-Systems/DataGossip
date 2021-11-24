@@ -101,8 +101,8 @@ class TransformScripts:
                           transform=transform)
         test_dataset = CIFAR10(location, train=False, download=True,
                                transform=transform)
-        Transformer("cifar10_train", location, dataset).transform().save()
-        Transformer("cifar10_test", location, test_dataset).transform().save()
+        Transformer("cifar10bw_train", location, dataset).transform().save()
+        Transformer("cifar10bw_test", location, test_dataset).transform().save()
 
     @staticmethod
     def emnist(location="../data", pretrained=False):

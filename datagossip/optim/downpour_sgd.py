@@ -26,7 +26,6 @@ class DownpourSGD(SGD):
         self.group = group
         self.parameter_server = parameter_server
 
-        # todo - only send classification layer of pretrained models
         self.push_message_sender = MessageSender()
         self.pull_message_sender = MessageSender()
         print("setup downpour listener")

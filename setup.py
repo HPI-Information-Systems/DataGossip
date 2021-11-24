@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="DataGossip",
-    version="0.4.2",
+    version="0.5.0",
     description="Distributed Machine Learning Training through Reactive Data Exchange",
     author="Phillip Wenig",
     author_email="phillip.wenig@hpi.de",

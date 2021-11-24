@@ -32,7 +32,7 @@ def load_dataset(dataset: str = MNIST) -> Tuple[TensorDataset, TensorDataset]:
         elif dataset == CIFAR10:
             dataset_name = "cifar10_%s"
         elif dataset == CIFAR10BW:
-            dataset_name = "cifar10_%s"
+            dataset_name = "cifar10bw_%s"
         elif dataset == EMNIST:
             dataset_name = "emnist_%s"
         else:
