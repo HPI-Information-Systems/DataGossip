@@ -47,17 +47,17 @@ def main():
     parser.add_argument('--lr', type=float, default=0.003, help="Initial learning rate")
     parser.add_argument('--batch_size', type=int, default=64, help="Mini batch size for SGD")
     parser.add_argument('--n_push_pull', type=int, default=5, help="Update model every n iterations")
-    parser.add_argument('--n_gather', type=int, default=4, help="Update selected instances n times per epoch")
-    parser.add_argument('--k', type=int, default=50, help="Number of points being gossiped")
+    parser.add_argument('--n_gather', type=int, default=1, help="Update selected instances n times per epoch")
+    parser.add_argument('--k', type=int, default=5, help="Number of points being gossiped")
     parser.add_argument('--overlap', type=int, default=0, help="Overlap for baseline")
-    parser.add_argument('--dataset', type=str, default='mnist', help="Dataset used for training")
-    parser.add_argument('--model', type=ModelSize, choices=ModelSize, default='large', help="Model used for training")
+    parser.add_argument('--dataset', type=str, default='fashionmnist', help="Dataset used for training")
+    parser.add_argument('--model', type=ModelSize, choices=ModelSize, default='small', help="Model used for training")
     parser.add_argument('--imbalanced', type=ownBool, default=True, help="Dataset partitioning imbalanced?")
     parser.add_argument('--local_tests', type=ownBool, default=False)
     parser.add_argument('--slowout', type=int, default=0, help="Number of nodes running with low priority processes")
     parser.add_argument('--remote_train_frequency', type=int, default=1, help="After how many local training steps should a remote training follow?")
     parser.add_argument('--parameter_server', type=ownBool, default=True, help="Use a Parameter Server")
-    parser.add_argument('--cycle', type=ownBool, default=False, help="Oversampling?")
+    parser.add_argument('--cycle', type=ownBool, default=True, help="Oversampling?")
     args = parser.parse_args(sys.argv[1:])
 
     print(args)
@@ -139,10 +139,7 @@ def prepare_datagossip(data_loader: DataLoader, args) -> Tuple[Iterable, nn.NLLL
                     data_shape=data_loader.dataset.tensors[0].shape[1:],
                     args=args)
 
-    if args.model == "large":
-        loss_fn = nn.functional.nll_loss
-    else:
-        loss_fn = nn.functional.cross_entropy
+    loss_fn = nn.functional.nll_loss
 
     dg_loss = DataGossipLoss(dg_loader.instance_selector, loss_fn=loss_fn)
 
@@ -154,12 +151,6 @@ def parameter_server(model: nn.Module, group: dist.group, client_ranks: List[int
     server = ParameterServer(model=model, group=group, client_ranks=client_ranks, args=args, test_loader=test_loader, test_model=model)
     server.start()
     print("parameter server stopped")
-
-
-def resize_data(data: torch.Tensor, args, size: int = 224):
-    if args.model != "large":
-        data = F.interpolate(data, size=size)
-    return data
 
 
 @torch.no_grad()
