@@ -1,6 +1,6 @@
 # DataGossip
 
-DataGossip is an extension for asynchronous distributed data parallel machine learning that improves the training on imbalanced partitions.
+DataGossip [[paper](http://dx.doi.org/10.48786/edbt.2022.24)] is an extension for asynchronous distributed data parallel machine learning that improves the training on imbalanced partitions.
 
 ## Installation
 
