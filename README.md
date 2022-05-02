@@ -26,3 +26,18 @@ $ python experiments/train.py --rank=<rank> --size=<size> --main_address=<main_a
 ```
 
 Afterwards, you can find the results of the experiment in the files (on your machine with rank=0) _experiments.pkl_ and _evaluations.pkl_ which hold pandas DataFrames.
+
+## Reference
+
+Please consider citing:
+```bibtex
+@inproceedings{wenig2022datagossip,
+  title={DataGossip: A Data Exchange Extension for Distributed Machine Learning Algorithms},
+  author={Wenig, Phillip and Papenbrock, Thorsten},
+  booktitle={Proceedings of the International Conference on Extending Database Technology (EDBT)},
+  year={2022},
+  pages={373--377},
+  doi={10.48786/edbt.2022.24},
+  url={http://dx.doi.org/10.48786/edbt.2022.24},
+}
+```
