@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Wenig
+    given-names: Phillip
+    orcid: https://orcid.org/0000-0002-8942-4322
+  - family-names: Papenbrock
+    given-names: Thorsten
+    orcid: https://orcid.org/0000-0002-4019-8221
+title: "DataGossip: A Data Exchange Extension for Distributed Machine Learning Algorithms"
+booktitle: "Proceedings of the International Conference on Extending Database Technology (EDBT)"
+date-released: 2022
+pages: 373--377
+doi: "10.48786/edbt.2022.24"
+url: "http://dx.doi.org/10.48786/edbt.2022.24"
