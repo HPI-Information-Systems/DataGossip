@@ -5,7 +5,7 @@ import fire
 from itertools import product
 from typing import List
 
-EXPERIMENTS_SETTINGS = "experiment_settings.yml"
+EXPERIMENTS_SETTINGS = "time_experiment_settings.yml"
 DIRECTORY = os.path.join(os.path.abspath("."), "experiments")
 
 

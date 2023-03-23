@@ -3,7 +3,7 @@ import torch.nn.functional as F
 
 
 class SmallTimeModel(nn.Module):
-    def __init__(self, in_channels=1, seq_len=1000, num_classes=10):
+    def __init__(self, in_channels=1, out_channels=7, seq_len=1000):
         super().__init__()
         self.conv1 = nn.Conv1d(in_channels, 10, kernel_size=5)
         self.conv2 = nn.Conv1d(10, 20, kernel_size=5)
@@ -14,7 +14,7 @@ class SmallTimeModel(nn.Module):
 
         neurons = ((((((seq_len - 4) // 2) - 4) // 2) - 2) // 2) * 20
         self.fc1 = nn.Linear(neurons, 50)
-        self.fc2 = nn.Linear(50, num_classes)
+        self.fc2 = nn.Linear(50, out_channels)
 
     def forward(self, x, **kwargs):
         batch_size = x.shape[0]

@@ -1,5 +1,6 @@
 from .transform_vision_datasets import Transformer
 from .data_loader import DistributedDataLoader
+from .time import load_time_datasets
 from typing import Tuple
 from torch.utils.data.dataset import TensorDataset
 import os
@@ -19,6 +20,7 @@ FASHIONMNIST = "fashionmnist"
 CIFAR10 = "cifar10"
 CIFAR10BW = "cifar10bw"
 EMNIST = "emnist"
+TIME = "time"
 
 
 def load_dataset(dataset: str = MNIST) -> Tuple[TensorDataset, TensorDataset]:
@@ -35,6 +37,8 @@ def load_dataset(dataset: str = MNIST) -> Tuple[TensorDataset, TensorDataset]:
             dataset_name = "cifar10bw_%s"
         elif dataset == EMNIST:
             dataset_name = "emnist_%s"
+        elif dataset == TIME:
+            return load_time_datasets()
         else:
             return train_dataset, test_dataset
         train_dataset = Transformer(directory=data_dir, dataset_name=dataset_name % "train").load()

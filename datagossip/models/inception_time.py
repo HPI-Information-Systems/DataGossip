@@ -4,7 +4,7 @@ import torch.nn.functional as F
 
 
 class InceptionNetwork(nn.Module):
-    def __init__(self, input_channels: int, seq_len: int = 1000, n_classes: int = 10, bottleneck_size: int = 32) -> None:
+    def __init__(self, input_channels: int, seq_len: int = 1000, out_channels: int = 7, bottleneck_size: int = 32) -> None:
         super().__init__()
 
         self.inception_block_1 = InceptionBlock(input_channels, bottleneck_size)
@@ -12,7 +12,7 @@ class InceptionNetwork(nn.Module):
 
         self.gap = nn.AvgPool1d(seq_len)
 
-        self.fc = nn.Linear(10, n_classes)
+        self.fc = nn.Linear(10, out_channels)
     
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         batch_size = x.shape[0]

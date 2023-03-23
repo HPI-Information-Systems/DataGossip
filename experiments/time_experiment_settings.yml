@@ -1,0 +1,66 @@
+# train longer and update frequency for balanced
+
+connection:
+  nodes:
+    - odin01
+    - odin02
+    - odin03
+    - odin04
+    - odin05
+    - odin06
+    - odin07
+    - odin08
+    - thor01
+    - thor02
+    - thor03
+    - thor04
+    - thor05
+    - thor06
+
+args:
+  optimizer: sgd
+
+  main_address: odin01
+  main_port: 29900
+
+  epochs: 600
+  early_stopping: False
+  datagossip:
+    - False
+    - True
+
+  parameter_server: True
+
+  instance_selector:
+    - active_bias
+
+  batch_size:
+    - 16
+
+  lr:
+    - 0.003
+
+  n_push_pull:
+    - 5
+
+  k:
+    - 5
+
+  n_gather: 1
+
+  remote_train_frequency:
+    - 1
+    - 4
+
+  dataset:
+    - time
+
+  model: time
+
+  imbalanced:
+    - True
+    - False
+
+  cycle: True
+
+  repetitions: 3
