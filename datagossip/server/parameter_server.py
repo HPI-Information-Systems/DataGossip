@@ -19,7 +19,7 @@ def resize_data(data: torch.Tensor, args, size: int = 224):
     return data
 
 
-@torch.no_grad()
+#@torch.no_grad()
 def test(model: nn.Module, data_loader: DataLoader, args):
     model.eval()
     correct = 0
