@@ -93,8 +93,8 @@ class ParameterServer:
         ]
         self.model_tester = None
         if test_loader is not None:
-            test_model.share_memory()
-            self.model_tester = ModelTester(test_model, test_loader, args)
+            #test_model.share_memory()
+            self.model_tester = ModelTester(torch.nn.Conv1d(in_channels=1, out_channels=7, kernel_size=1), test_loader, args)
         self.group = group
         self.client_ranks = client_ranks
         print("sync model")
