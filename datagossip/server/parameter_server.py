@@ -90,15 +90,17 @@ class ModelTester(mp.Process):
 
 class ParameterServer:
     def __init__(self, model: nn.Module, group: dist.group, client_ranks: List[int], args, test_loader: DataLoader = None, test_model: nn.Module = None):
+        
+        self.model_tester = None
+        if test_loader is not None:
+            #test_model.share_memory()
+            self.model_tester = ModelTester(torch.nn.Conv1d(in_channels=1, out_channels=7, kernel_size=1), None, args)
         print("setup listeners")
         self.listeners = [
             GradientPushListener(model),
             ParameterPullListener(model)
         ]
-        self.model_tester = None
-        if test_loader is not None:
-            #test_model.share_memory()
-            self.model_tester = ModelTester(torch.nn.Conv1d(in_channels=1, out_channels=7, kernel_size=1), None, args)
+        
         self.group = group
         self.client_ranks = client_ranks
         print("sync model")
@@ -113,10 +115,10 @@ class ParameterServer:
 
     def start(self):
         self.is_running = True
-        for thread in self.listeners:
-            thread.start()
         if self.model_tester is not None:
             self.model_tester.start()
+        for thread in self.listeners:
+            thread.start()
         self._wait_for_kill()
 
     def _wait_for_kill(self):
