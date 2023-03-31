@@ -13,13 +13,10 @@ def load_time_datasets() -> Tuple[TensorDataset, TensorDataset]:
     df_test = pd.read_csv(DATASET_PATH % "TEST", header=None, sep="\t")
 
     X_train = df_train.iloc[:, 1:].values
-    y_train = df_train.iloc[:, 0].values
+    y_train = df_train.iloc[:, 0].values - 1
 
     X_test = df_test.iloc[:, 1:].values
-    y_test = df_test.iloc[:, 0].values
-
-    # print the distict classes
-    print("classes:", set(y_train))
+    y_test = df_test.iloc[:, 0].values - 1
 
     # add channel dimension
     X_train = X_train[:, None, :]
