@@ -18,6 +18,9 @@ def load_time_datasets() -> Tuple[TensorDataset, TensorDataset]:
     X_test = df_test.iloc[:, 1:].values
     y_test = df_test.iloc[:, 0].values
 
+    # print the distict classes
+    print("classes:", set(y_train))
+
     # add channel dimension
     X_train = X_train[:, None, :]
     X_test = X_test[:, None, :]

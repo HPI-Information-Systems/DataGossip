@@ -193,21 +193,10 @@ def train(model: nn.Module, data_loader: DataLoader, test_loader: DataLoader, cr
         print("\r done")
         for e in range(5):
             for data, target in tqdm.tqdm(data_loader, desc=f"Epoch {e + 1}"):
-                print("optimizer")
                 optimizer.zero_grad()
-                print("model")
                 output = model(data)
-                print("loss", criterion)
-                try:
-                    loss = torch.nn.functional.nll_loss(output, target)
-                except Exception as e:
-                    print(e)
-                    raise e
-
-                #loss = criterion(output, target)
-                print("backward", loss.item())
+                loss = criterion(output, target)
                 loss.backward()
-                print("step")
                 optimizer.step()
 
             if args.local_tests:
