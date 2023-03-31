@@ -94,7 +94,7 @@ class ParameterServer:
         self.model_tester = None
         if test_loader is not None:
             #test_model.share_memory()
-            self.model_tester = ModelTester(torch.nn.Conv1d(in_channels=1, out_channels=7, kernel_size=1), None, args)
+            self.model_tester = ModelTester(None, None, args)
         print("setup listeners")
         self.listeners = [
             GradientPushListener(model),
