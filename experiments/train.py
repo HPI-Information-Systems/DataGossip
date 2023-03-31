@@ -122,7 +122,7 @@ def distribute_datasets(args) -> Tuple[Tuple[TensorDataset, TensorDataset], Tupl
         test_loader = DistributedDataLoader(test_dataset,
                                             partition=False,
                                             parameter_server=True,
-                                            batch_size=256)
+                                            batch_size=16)
         print("test loader created")
 
     return (dataset, test_dataset), (data_loader, test_loader)

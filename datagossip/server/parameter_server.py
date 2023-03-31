@@ -24,8 +24,11 @@ def test(model: nn.Module, data_loader: DataLoader, args):
     model.eval()
     correct = 0
     for data, target in tqdm.tqdm(data_loader):
+        print("model")
         output = model(data)
+        print("model done")
         pred = output.max(1)[1]
+        print("pred done")
         correct += pred.eq(target).sum().item()
     acc = correct / len(data_loader.dataset)
     model.train()
