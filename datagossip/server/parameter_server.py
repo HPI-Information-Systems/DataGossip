@@ -74,6 +74,7 @@ class ModelTester(mp.Process):
         experiment._add_experiment()
         experiment.results = experiment._load_results()
         while self.is_running.value:
+            print("test", e)
             test_acc = test(self.model, self.dataloader, self.args)
             time = (datetime.now() - start_time).seconds
             experiment.add_results(e, test_acc, time)
