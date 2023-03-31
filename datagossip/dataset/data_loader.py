@@ -101,17 +101,13 @@ class DistributedDataLoader(DataLoader):
             self._receive_client()
 
     def broadcast_all(self, server: bool = False):
-        print("broadcast all")
         if server:
-            print("broadcast server")
             self._broadcast_server(list(range(dist.get_world_size())))
         else:
-            print("receive client")
             self._receive_client()
 
     def _broadcast_server(self, dst_ranks: List[int]):
         for i, rank in enumerate(dst_ranks):
-            print(f"broadcasting to rank {rank}")
             data = self.dataset.tensors[0]
             targets = self.dataset.tensors[1]
             data_shape = torch.IntTensor([data.shape])
@@ -119,29 +115,22 @@ class DistributedDataLoader(DataLoader):
             if rank == self.rank:
                 continue
             
-            print(f"broadcasting to rank {rank} with shape {data_shape}")
             dist.send(data_shape, dst=rank)
-            print(f"broadcasting to rank {rank} with data {data}")
             dist.send(data, dst=rank)
-            print(f"broadcasting to rank {rank} with targets {targets}")
             dist.send(targets, dst=rank)
 
         if self.rank in dst_ranks:
             self._update_dataset(self.dataset.tensors[0], self.dataset.tensors[1])
 
     def _receive_client(self):
-        print("receiving client")
         data_shape = torch.zeros(4).int() - 1
         dist.recv(data_shape, src=0)
         data_shape = data_shape[data_shape != -1]
-        print(f"received data shape {data_shape} from rank 0")
 
         data = torch.zeros(torch.Size(data_shape))
         targets = torch.zeros(data_shape[0].item()).long()
         dist.recv(data, src=0)
-        print(f"received data {data} from rank 0")
         dist.recv(targets, src=0)
-        print(f"received targets {targets} from rank 0")
 
         self._update_dataset(data, targets)
 

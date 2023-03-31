@@ -19,7 +19,9 @@ def load_time_datasets() -> Tuple[TensorDataset, TensorDataset]:
     y_test = df_test.iloc[:, 0].values
 
     train_dataset = TensorDataset(torch.from_numpy(X_train).float(), torch.from_numpy(y_train).long())
-    test_dataset = TensorDataset(torch.from_numpy(X_test).float(), torch.from_numpy(y_test).long())
+
+    # sample test data; only take 1000 samples
+    test_dataset = TensorDataset(torch.from_numpy(X_test[:1000]).float(), torch.from_numpy(y_test[:1000]).long())
 
     return train_dataset, test_dataset
 
