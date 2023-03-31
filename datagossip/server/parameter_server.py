@@ -124,8 +124,10 @@ class ParameterServer:
         self.print_report()
         if self.model_tester is not None:
             self.model_tester.stop()
+        print("waiting for model tester to finish")
         while self.model_tester.is_alive():
             pass
+        print("model tester finished")
         dist.barrier(group=self.group)
 
     def print_report(self):
