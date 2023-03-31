@@ -24,7 +24,7 @@ def test(model: nn.Module, data_loader: DataLoader, args):
     model.eval()
     correct = 0
     for data, target in tqdm.tqdm(data_loader):
-        print("model", model)
+        print("model")
         output = model(data)
         print("model done")
         pred = output.max(1)[1]
@@ -79,7 +79,8 @@ class ModelTester(mp.Process):
         experiment.results = experiment._load_results()
         while self.is_running.value:
             try:
-                test_acc = test(self.model, self.dataloader, self.args)
+                copied_model = ModelSerializer.copy_model(self.model)
+                test_acc = test(copied_model, self.dataloader, self.args)
             except Exception as e:
                 print(e)
                 raise e

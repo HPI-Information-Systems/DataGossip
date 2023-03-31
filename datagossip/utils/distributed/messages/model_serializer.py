@@ -27,3 +27,7 @@ class ModelSerializer:
             inter_length = p.flatten().shape[0]
             p.data.copy_(flat_tensor[offset:offset + inter_length].view(p.shape))
             offset += inter_length
+
+    @staticmethod
+    def copy_model(model: nn.Module) -> nn.Module:
+        return type(model)(**model.__dict__)
