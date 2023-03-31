@@ -25,7 +25,8 @@ class ModelSize(Enum):
         })
         if dataset == "time":
             model_kwargs.update({
-                "out_channels": 7
+                "out_channels": 7,
+                "seq_len": 96
             })
 
         if self == self.SMALL:
