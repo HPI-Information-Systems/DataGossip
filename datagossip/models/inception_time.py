@@ -4,10 +4,10 @@ import torch.nn.functional as F
 
 
 class InceptionNetwork(nn.Module):
-    def __init__(self, input_channels: int, seq_len: int = 1000, out_channels: int = 7, bottleneck_size: int = 32) -> None:
+    def __init__(self, in_channels: int, seq_len: int = 1000, out_channels: int = 7, bottleneck_size: int = 32) -> None:
         super().__init__()
 
-        self.inception_block_1 = InceptionBlock(input_channels, bottleneck_size)
+        self.inception_block_1 = InceptionBlock(in_channels, bottleneck_size)
         self.inception_block_2 = InceptionBlock(bottleneck_size*4, bottleneck_size)
 
         self.gap = nn.AvgPool1d(seq_len)
