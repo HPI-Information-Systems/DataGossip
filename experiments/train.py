@@ -118,10 +118,12 @@ def distribute_datasets(args) -> Tuple[Tuple[TensorDataset, TensorDataset], Tupl
                                             # minus parameter server and own node
                                             overlap=args.overlap,
                                             with_indices=args.datagossip)
+        print("data loader created")
         test_loader = DistributedDataLoader(test_dataset,
                                             partition=False,
                                             parameter_server=True,
                                             batch_size=256)
+        print("test loader created")
 
     return (dataset, test_dataset), (data_loader, test_loader)
 
