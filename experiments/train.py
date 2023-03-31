@@ -191,12 +191,17 @@ def train(model: nn.Module, data_loader: DataLoader, test_loader: DataLoader, cr
     print("starting experiment")
     with Experiment(".", metrics=["acc", "process_time"], attributes=dict(args._get_kwargs())) as experiment:
         print("\r done")
-        for e in range(args.epochs):
+        for e in range(5):
             for data, target in tqdm.tqdm(data_loader, desc=f"Epoch {e + 1}"):
+                print("optimizer")
                 optimizer.zero_grad()
+                print("model")
                 output = model(data)
+                print("loss")
                 loss = criterion(output, target)
+                print("backward")
                 loss.backward()
+                print("step")
                 optimizer.step()
 
             if args.local_tests:
