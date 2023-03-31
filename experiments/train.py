@@ -195,6 +195,7 @@ def train(model: nn.Module, data_loader: DataLoader, test_loader: DataLoader, cr
             for data, target in tqdm.tqdm(data_loader, desc=f"Epoch {e + 1}"):
                 print("data", data)
                 optimizer.zero_grad()
+                print("optimizer.zero_graded")
                 output = model(data)
                 print("output", output)
                 loss = criterion(output, target)
