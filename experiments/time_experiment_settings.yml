@@ -39,21 +39,20 @@ args:
     - 0.003
 
   n_push_pull:
-    - 5
+    - 50
 
   k:
-    - 5
+    - 50
 
-  n_gather: 1
+  n_gather: 50
 
   remote_train_frequency:
-    - 1
-    - 4
+    - 50
 
   dataset:
     - time
 
-  model: inception
+  model: time
 
   imbalanced:
     - True
