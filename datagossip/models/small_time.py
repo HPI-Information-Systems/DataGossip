@@ -17,6 +17,7 @@ class SmallTimeModel(nn.Module):
         self.fc2 = nn.Linear(50, out_channels)
 
     def forward(self, x, **kwargs):
+        print("inside model")
         batch_size = x.shape[0]
         x = F.relu(self.max_pool(self.conv1(x)))
         x = F.relu(self.max_pool(self.conv2(x)))

@@ -24,7 +24,7 @@ def test(model: nn.Module, data_loader: DataLoader, args):
     model.eval()
     correct = 0
     for data, target in tqdm.tqdm(data_loader):
-        print("model")
+        print("model", model)
         output = model(data)
         print("model done")
         pred = output.max(1)[1]
