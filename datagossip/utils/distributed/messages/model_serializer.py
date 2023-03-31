@@ -30,4 +30,6 @@ class ModelSerializer:
 
     @staticmethod
     def copy_model(model: nn.Module) -> nn.Module:
-        return type(model)(**model.__dict__)
+        new_model = model.__class__()
+        new_model.load_state_dict(model.state_dict())
+        return new_model
