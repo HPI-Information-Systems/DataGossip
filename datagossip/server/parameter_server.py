@@ -77,7 +77,11 @@ class ModelTester(mp.Process):
         experiment.results = experiment._load_results()
         while self.is_running.value:
             copied_model = torch.nn.Conv1d(in_channels=1, out_channels=7, kernel_size=1)
-            test_acc = test(copied_model, self.dataloader, self.args)
+            if self.dataloader is not None:
+                test_acc = test(copied_model, self.dataloader, self.args)
+            else:
+                copied_model(torch.rand(1, 1, 20))
+                test_acc = 0
             time = (datetime.now() - start_time).seconds
             experiment.add_results(e, test_acc, time)
             e += 1
@@ -94,7 +98,7 @@ class ParameterServer:
         self.model_tester = None
         if test_loader is not None:
             #test_model.share_memory()
-            self.model_tester = ModelTester(torch.nn.Conv1d(in_channels=1, out_channels=7, kernel_size=1), test_loader, args)
+            self.model_tester = ModelTester(torch.nn.Conv1d(in_channels=1, out_channels=7, kernel_size=1), None, args)
         self.group = group
         self.client_ranks = client_ranks
         print("sync model")
