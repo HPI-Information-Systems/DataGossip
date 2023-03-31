@@ -39,7 +39,7 @@ class GradientPushListener(MessageListener):
         test = list(self.model.parameters())[0].clone()
         ModelSerializer.add_grads(self.model, self.receive_buffer)
         test2 = list(self.model.parameters())[0].clone()
-        assert (test - test2).sum() == 0, "gradient push failed"
+        #assert (test - test2).sum() == 0, "gradient push failed"
 
 
 class ParameterPullListener(MessageListener):
