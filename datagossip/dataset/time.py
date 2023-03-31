@@ -18,6 +18,10 @@ def load_time_datasets() -> Tuple[TensorDataset, TensorDataset]:
     X_test = df_test.iloc[:, 1:].values
     y_test = df_test.iloc[:, 0].values
 
+    # add channel dimension
+    X_train = X_train[:, None, :]
+    X_test = X_test[:, None, :]
+
     train_dataset = TensorDataset(torch.from_numpy(X_train).float(), torch.from_numpy(y_train).long())
 
     # sample test data; only take 1000 samples
