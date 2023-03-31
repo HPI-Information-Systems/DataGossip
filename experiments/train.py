@@ -198,7 +198,7 @@ def train(model: nn.Module, data_loader: DataLoader, test_loader: DataLoader, cr
                 print("model")
                 output = model(data)
                 print("loss", criterion)
-                loss = torch.functional.nll_loss(output, target)
+                loss = torch.nn.functional.nll_loss(output, target)
                 #loss = criterion(output, target)
                 print("backward", loss.item())
                 loss.backward()
