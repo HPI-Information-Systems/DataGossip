@@ -17,24 +17,15 @@ class SmallTimeModel(nn.Module):
         self.fc2 = nn.Linear(50, out_channels)
 
     def forward(self, x, **kwargs):
-        print("inside model")
         batch_size = x.shape[0]
         x = F.relu(self.max_pool(self.conv1(x)))
-        print("conv1 done")
         x = F.relu(self.max_pool(self.conv2(x)))
-        print("conv2 done")
         x = F.relu(self.max_pool(self.conv2_drop(self.conv3(x))))
-        print("conv3 done")
         x = x.view(batch_size, -1)
-        print("view done")
         x = F.relu(self.fc1(x))
-        print("fc1 done")
         x = F.dropout(x, training=self.training)
-        print("dropout done")
         x = self.fc2(x)
-        print("fc2 done")
         x = F.log_softmax(x, dim=1)
-        print("softmax done")
         return x
 
 

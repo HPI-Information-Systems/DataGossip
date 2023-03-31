@@ -23,7 +23,7 @@ class ModelSize(Enum):
             "in_channels": 1 if dataset in one_dim_datasets else 3,
             #"out_channels": 62 if dataset == "emnist" else 10
         })
-        if dataset == "time":
+        if dataset == "time" or dataset == "inception":
             model_kwargs.update({
                 "out_channels": 7,
                 "seq_len": 96

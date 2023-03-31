@@ -53,7 +53,7 @@ args:
   dataset:
     - time
 
-  model: time
+  model: inception
 
   imbalanced:
     - True
