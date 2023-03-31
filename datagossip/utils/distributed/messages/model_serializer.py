@@ -16,7 +16,7 @@ class ModelSerializer:
         offset = 0
         for p in model.parameters():
             inter_length = p.flatten().shape[0]
-            p[:].add_(flat_tensor[offset:offset+inter_length].view(p.shape))
+            p[:].detach().add_(flat_tensor[offset:offset+inter_length].view(p.shape))
             offset += inter_length
 
     @staticmethod
