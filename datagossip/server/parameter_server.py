@@ -80,7 +80,7 @@ class ModelTester(mp.Process):
             if self.dataloader is not None:
                 test_acc = test(copied_model, self.dataloader, self.args)
             else:
-                copied_model(torch.rand(1, 1, 20))
+                print(copied_model(torch.rand(1, 1, 20)))
                 test_acc = 0
             time = (datetime.now() - start_time).seconds
             experiment.add_results(e, test_acc, time)
