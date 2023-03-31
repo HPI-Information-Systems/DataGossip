@@ -39,15 +39,16 @@ args:
     - 0.003
 
   n_push_pull:
-    - 500
+    - 5
 
   k:
-    - 500
+    - 5
 
-  n_gather: 500
+  n_gather: 1
 
   remote_train_frequency:
-    - 500
+    - 1
+    - 4
 
   dataset:
     - time
