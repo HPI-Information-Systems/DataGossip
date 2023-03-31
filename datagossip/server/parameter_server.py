@@ -24,11 +24,8 @@ def test(model: nn.Module, data_loader: DataLoader, args):
     model.eval()
     correct = 0
     for data, target in tqdm.tqdm(data_loader):
-        print("model")
         output = model(data)
-        print("model done")
         pred = output.max(1)[1]
-        print("pred done")
         correct += pred.eq(target).sum().item()
     acc = correct / len(data_loader.dataset)
     model.train()
@@ -79,8 +76,9 @@ class ModelTester(mp.Process):
         experiment.results = experiment._load_results()
         while self.is_running.value:
             try:
-                copied_model = self.model.__class__(in_channels=1, out_channels=7, seq_len=96)
-                test_acc = test(copied_model, self.dataloader, self.args)
+                #copied_model = self.model.__class__(in_channels=1, out_channels=7, seq_len=96)
+                #test_acc = test(copied_model, self.dataloader, self.args)
+                test_acc = 0.0
             except Exception as e:
                 print(e)
                 raise e
