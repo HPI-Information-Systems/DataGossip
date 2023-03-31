@@ -197,7 +197,7 @@ def train(model: nn.Module, data_loader: DataLoader, test_loader: DataLoader, cr
                 optimizer.zero_grad()
                 print("model")
                 output = model(data)
-                print("loss", output.shape, target.shape)
+                print("loss", criterion)
                 loss = criterion(output, target)
                 print("backward", loss.item())
                 loss.backward()
