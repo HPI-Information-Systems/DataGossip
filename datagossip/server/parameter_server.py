@@ -25,6 +25,7 @@ def test(model: nn.Module, data_loader: DataLoader, args):
     correct = 0
     for data, target in tqdm.tqdm(data_loader):
         output = model(data)
+        output = output.mean(dim=2)
         pred = output.max(1)[1]
         correct += pred.eq(target).sum().item()
     acc = correct / len(data_loader.dataset)
@@ -75,13 +76,8 @@ class ModelTester(mp.Process):
         experiment._add_experiment()
         experiment.results = experiment._load_results()
         while self.is_running.value:
-            try:
-                #copied_model = self.model.__class__(in_channels=1, out_channels=7, seq_len=96)
-                #test_acc = test(copied_model, self.dataloader, self.args)
-                test_acc = 0.0
-            except Exception as e:
-                print(e)
-                raise e
+            copied_model = torch.nn.Conv1d(in_channels=1, out_channels=7)
+            test_acc = test(copied_model, self.dataloader, self.args)
             time = (datetime.now() - start_time).seconds
             experiment.add_results(e, test_acc, time)
             e += 1
