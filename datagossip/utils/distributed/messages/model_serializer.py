@@ -2,7 +2,6 @@ import torch
 import torch.nn as nn
 from typing import List, Tuple
 from .type import MessageType
-from copy import deepcopy
 
 
 class ModelSerializer:
@@ -31,5 +30,6 @@ class ModelSerializer:
 
     @staticmethod
     def copy_model(model: nn.Module) -> nn.Module:
-        new_model = deepcopy(model)
+        new_model = model.__class__(out_channels=7, in_channels=1, seq_len=96)
+        new_model.load_state_dict(model.state_dict())
         return new_model
