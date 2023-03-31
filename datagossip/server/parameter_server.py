@@ -36,10 +36,7 @@ class GradientPushListener(MessageListener):
         return MessageType.GradientPush
 
     def receive_message(self, sender: int):
-        test = list(self.model.parameters())[0].clone()
         ModelSerializer.add_grads(self.model, self.receive_buffer)
-        test2 = list(self.model.parameters())[0].clone()
-        #assert (test - test2).sum() == 0, "gradient push failed"
 
 
 class ParameterPullListener(MessageListener):
@@ -87,6 +84,7 @@ class ModelTester(mp.Process):
 class ParameterServer:
     def __init__(self, model: nn.Module, group: dist.group, client_ranks: List[int], args, test_loader: DataLoader = None, test_model: nn.Module = None):
         print("setup listeners")
+        self.model.eval()
         self.listeners = [
             GradientPushListener(model),
             ParameterPullListener(model)
