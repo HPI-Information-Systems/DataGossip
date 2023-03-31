@@ -61,3 +61,4 @@ args:
   cycle: True
 
   repetitions: 3
+  local_tests: True

@@ -19,7 +19,7 @@ def resize_data(data: torch.Tensor, args, size: int = 224):
     return data
 
 
-#@torch.no_grad()
+@torch.no_grad()
 def test(model: nn.Module, data_loader: DataLoader, args):
     model.eval()
     correct = 0
@@ -76,12 +76,7 @@ class ModelTester(mp.Process):
         experiment._add_experiment()
         experiment.results = experiment._load_results()
         while self.is_running.value:
-            copied_model = torch.nn.Conv1d(in_channels=1, out_channels=7, kernel_size=1)
-            if self.dataloader is not None:
-                test_acc = test(copied_model, self.dataloader, self.args)
-            else:
-                print(copied_model(torch.rand(1, 1, 20)))
-                test_acc = 0
+            test_acc = test(self.model, self.dataloader, self.args)
             time = (datetime.now() - start_time).seconds
             experiment.add_results(e, test_acc, time)
             e += 1
@@ -90,16 +85,17 @@ class ModelTester(mp.Process):
 
 class ParameterServer:
     def __init__(self, model: nn.Module, group: dist.group, client_ranks: List[int], args, test_loader: DataLoader = None, test_model: nn.Module = None):
-        
-        self.model_tester = None
-        if test_loader is not None:
-            #test_model.share_memory()
-            self.model_tester = ModelTester(None, None, args)
         print("setup listeners")
         self.listeners = [
             GradientPushListener(model),
             ParameterPullListener(model)
         ]
+
+        self.model_tester = None
+        if test_loader is not None:
+            #test_model.share_memory()
+            #self.model_tester = ModelTester(test_model, test_loader, args)
+            pass
         
         self.group = group
         self.client_ranks = client_ranks
@@ -133,10 +129,8 @@ class ParameterServer:
         self.print_report()
         if self.model_tester is not None:
             self.model_tester.stop()
-        print("waiting for model tester to finish")
         while self.model_tester.is_alive():
             pass
-        print("model tester finished")
         dist.barrier(group=self.group)
 
     def print_report(self):
