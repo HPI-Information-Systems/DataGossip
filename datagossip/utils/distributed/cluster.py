@@ -21,7 +21,9 @@ class Cluster:
                                 rank=rank, world_size=size, timeout=datetime.timedelta(0, 3600))
 
     def __enter__(self):
+        print("Setting up cluster")
         self._setup_cluster(self.rank, self.size)
+        print("Cluster setup done")
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         dist.barrier()
