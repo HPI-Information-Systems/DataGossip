@@ -2,25 +2,23 @@
 
 connection:
   nodes:
-    - odin01
-    - odin02
     - odin03
     - odin04
     - odin05
     - odin06
     - odin07
     - odin08
-    - thor01
-    - thor02
-    - thor03
-    - thor04
-    - thor05
-    - thor06
+    - odin09
+    - odin10
+    - odin11
+    - odin12
+    - odin13
+    - odin14
 
 args:
   optimizer: sgd
 
-  main_address: odin01
+  main_address: odin03
   main_port: 29900
 
   epochs: 600

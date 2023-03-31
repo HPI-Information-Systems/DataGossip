@@ -5,7 +5,7 @@ import pandas as pd
 
 
 DATASET_NAME = "ElectricDevices"
-DATASET_PATH = f"~/Datasets/UCRArchive_2018/{DATASET_NAME}/{DATASET_NAME}_%s.tsv"
+DATASET_PATH = f"~/datasets/UCRArchive_2018/{DATASET_NAME}/{DATASET_NAME}_%s.tsv"
 
 
 def load_time_datasets() -> Tuple[TensorDataset, TensorDataset]:

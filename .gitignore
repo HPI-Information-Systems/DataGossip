@@ -5,3 +5,7 @@ datagossip/data/
 data/
 helpers/
 **/__pycache__
+build/
+dist/
+*.egg-info
+*.egg
