@@ -76,7 +76,7 @@ class ModelTester(mp.Process):
         experiment._add_experiment()
         experiment.results = experiment._load_results()
         while self.is_running.value:
-            copied_model = torch.nn.Conv1d(in_channels=1, out_channels=7)
+            copied_model = torch.nn.Conv1d(in_channels=1, out_channels=7, kernel_size=1)
             test_acc = test(copied_model, self.dataloader, self.args)
             time = (datetime.now() - start_time).seconds
             experiment.add_results(e, test_acc, time)
