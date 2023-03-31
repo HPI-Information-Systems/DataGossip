@@ -198,7 +198,12 @@ def train(model: nn.Module, data_loader: DataLoader, test_loader: DataLoader, cr
                 print("model")
                 output = model(data)
                 print("loss", criterion)
-                loss = torch.nn.functional.nll_loss(output, target)
+                try:
+                    loss = torch.nn.functional.nll_loss(output, target)
+                except Exception as e:
+                    print(e)
+                    raise e
+
                 #loss = criterion(output, target)
                 print("backward", loss.item())
                 loss.backward()
