@@ -6,6 +6,7 @@ from torch.utils.data import DataLoader
 from typing import List
 from datetime import datetime
 from ctypes import c_bool
+import tqdm
 
 from ..utils.distributed.messages import MessageListener, ModelSerializer, MessageSender
 from ..utils.distributed.messages.type import MessageType
@@ -22,7 +23,7 @@ def resize_data(data: torch.Tensor, args, size: int = 224):
 def test(model: nn.Module, data_loader: DataLoader, args):
     model.eval()
     correct = 0
-    for data, target in data_loader:
+    for data, target in tqdm.tqdm(data_loader):
         output = model(data)
         pred = output.max(1)[1]
         correct += pred.eq(target).sum().item()
