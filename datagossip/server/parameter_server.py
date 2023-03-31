@@ -79,7 +79,7 @@ class ModelTester(mp.Process):
         experiment.results = experiment._load_results()
         while self.is_running.value:
             try:
-                copied_model = ModelSerializer.copy_model(self.model)
+                copied_model = self.model.__class__(in_channels=1, out_channels=7, seq_len=96)
                 test_acc = test(copied_model, self.dataloader, self.args)
             except Exception as e:
                 print(e)

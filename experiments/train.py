@@ -155,7 +155,7 @@ def parameter_server(model: nn.Module, group: dist.group, client_ranks: List[int
     print("parameter server stopped")
 
 
-@torch.no_grad()
+#@torch.no_grad()
 def test(model: nn.Module, data_loader: DataLoader, args):
     model.eval()
     correct = 0
