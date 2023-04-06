@@ -84,6 +84,7 @@ class ModelTester(mp.Process):
 
 class ParameterServer:
     def __init__(self, model: nn.Module, group: dist.group, client_ranks: List[int], args, test_loader: DataLoader = None, test_model: nn.Module = None):
+        mp.set_start_method('spawn')
         print("setup listeners")
         self.listeners = [
             GradientPushListener(model),
