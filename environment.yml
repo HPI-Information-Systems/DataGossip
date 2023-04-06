@@ -5,8 +5,8 @@ channels:
   - defaults
 dependencies:
   - python=3.7
-  - pytorch=1.10.1
-  - torchvision=0.11.2
+  - pytorch=1.5.0
+  - torchvision=0.6.0
   - numpy
   - tqdm
   - fire
