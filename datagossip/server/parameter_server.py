@@ -93,9 +93,8 @@ class ParameterServer:
 
         self.model_tester = None
         if test_loader is not None:
-            #test_model.share_memory()
-            #self.model_tester = ModelTester(test_model, test_loader, args)
-            pass
+            test_model.share_memory()
+            self.model_tester = ModelTester(test_model, test_loader, args)
         
         self.group = group
         self.client_ranks = client_ranks
