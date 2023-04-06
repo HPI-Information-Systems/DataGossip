@@ -12,7 +12,6 @@ class ModelSerializer:
         return torch.cat(list(p.data.view(-1) for p in model.parameters()))
 
     @staticmethod
-    @torch.no_grad()
     def add_grads(model: nn.Module, flat_tensor: torch.Tensor):
         offset = 0
         for p in model.parameters():
