@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.distributed as dist
-import multiprocessing as mp
+import torch.multiprocessing as mp
 from torch.utils.data import DataLoader
 from typing import List
 from datetime import datetime
