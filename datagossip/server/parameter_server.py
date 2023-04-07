@@ -24,6 +24,7 @@ def test(model: nn.Module, data_loader: DataLoader, args):
     correct = 0
     for data, target in tqdm.tqdm(data_loader):
         output = model(data)
+        print(output.shape, target.shape)
         output = output.mean(dim=2)
         pred = output.max(1)[1]
         correct += pred.eq(target).sum().item()
