@@ -1,6 +1,7 @@
 import torch
 from torch.utils.data import DataLoader
 from typing import List, Iterator, Type
+import torch.multiprocessing as mp
 
 from .foreign import ForeignDataIterator
 from ..process import DataGossipProcess
@@ -14,8 +15,8 @@ class DataGossipLoader:
                  data_shape: List[int],
                  args,
                  foreign_data_loader: Type[ForeignDataIterator] = ForeignDataIterator):
+        mp.set_start_method('spawn')
         self.local_data_loader = data_loader
-
         # foreign data
         n_neighbors = args.size # group size
         self.foreign_data = torch.zeros(n_neighbors - 1, args.k, *data_shape) - 1
