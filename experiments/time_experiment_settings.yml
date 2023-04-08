@@ -21,10 +21,10 @@ args:
   main_address: odin03
   main_port: 29900
 
-  epochs: 600
+  epochs: 5
   early_stopping: False
   datagossip:
-    - False
+#    - False
     - True
 
   parameter_server: True

@@ -8,6 +8,7 @@ from datetime import datetime
 from ctypes import c_bool
 import tqdm
 
+from ..utils import set_start_method
 from ..utils.distributed.messages import MessageListener, ModelSerializer, MessageSender
 from ..utils.distributed.messages.type import MessageType
 from ..utils.experiments import Experiment
@@ -83,7 +84,7 @@ class ModelTester(mp.Process):
 
 class ParameterServer:
     def __init__(self, model: nn.Module, group: dist.group, client_ranks: List[int], args, test_loader: DataLoader = None, test_model: nn.Module = None):
-        mp.set_start_method('spawn')
+        set_start_method('spawn')
         print("setup listeners")
         self.listeners = [
             GradientPushListener(model),
